@@ -1,0 +1,22 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "{C976F837-45A2-FAD2-15BD-E39E0F80C5BF}",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "ShootBlocks",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
+		}
+	]
+}
