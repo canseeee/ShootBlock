@@ -7,7 +7,11 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "TP_WeaponComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FFireDate);
+
 class AShootBlocksCharacter;
+
+
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SHOOTBLOCKS_API UTP_WeaponComponent : public USkeletalMeshComponent
@@ -58,6 +62,10 @@ protected:
 private:
 	/** The Character holding this weapon*/
 	AShootBlocksCharacter* Character;
+public:
+	UPROPERTY(BlueprintAssignable)
+	FFireDate FireDate;
 
-
+	UFUNCTION(BlueprintCallable)
+	void CallFire();
 };

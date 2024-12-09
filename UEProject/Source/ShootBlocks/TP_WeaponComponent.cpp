@@ -23,6 +23,7 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 
 void UTP_WeaponComponent::Fire()
 {
+	UE_LOG(LogTemp, Display, TEXT("Fire"));
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
 		return;
@@ -34,24 +35,7 @@ void UTP_WeaponComponent::Fire()
 		UWorld* const World = GetWorld();
 		if (World != nullptr)
 		{
-			/*APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
-			FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
-			FQuat SpawnQuaternion = SpawnRotation.Quaternion(); // 将FRotator转换为FQuat
-			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-			FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(MuzzleOffset);
-			FTransform SpawnTransform;
 
-			SpawnTransform.SetLocation(SpawnLocation);
-			SpawnTransform.SetRotation(SpawnQuaternion);
-			SpawnTransform.SetScale3D(FVector(1, 1, 1));
-	
-			//Set Spawn Collision Handling Override
-			FActorSpawnParameters ActorSpawnParams;
-			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-			World->SpawnActor<AShootBlocksProjectile>(SpawnLocation,SpawnRotation,ActorSpawnParams);
-			// Spawn the projectile at the muzzle
-			//World->SpawnActorDeferred<AActor>(ProjectileClass,SpawnTransform,Cast<AActor>(GetOuter()));*/
 			APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
 			const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
 			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
@@ -70,6 +54,8 @@ void UTP_WeaponComponent::Fire()
 			
 			// Spawn the projectile at the muzzle
 			World->SpawnActor<AShootBlocksProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+
+			FireDate.Broadcast();
 
 			//World->SpawnActorDeferred<AActor>(ProjectileClass,SpawnTransform,Character,Character,ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
 		}
@@ -143,4 +129,9 @@ void UTP_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 			Subsystem->RemoveMappingContext(FireMappingContext);
 		}
 	}
+}
+
+void UTP_WeaponComponent::CallFire()
+{
+	FireDate.Broadcast();
 }
