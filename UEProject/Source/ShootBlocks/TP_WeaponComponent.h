@@ -7,7 +7,8 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "TP_WeaponComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FFireDate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFireDate,int32,iVal);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNotBullet);
 
 class AShootBlocksCharacter;
 
@@ -62,10 +63,20 @@ protected:
 private:
 	/** The Character holding this weapon*/
 	AShootBlocksCharacter* Character;
+
 public:
 	UPROPERTY(BlueprintAssignable)
 	FFireDate FireDate;
 
+	UPROPERTY(BlueprintAssignable)
+	FNotBullet NotBullet;
+	
 	UFUNCTION(BlueprintCallable)
 	void CallFire();
+
+	UPROPERTY(BlueprintReadWrite)
+	int BulletNum;
+
+	UPROPERTY(BlueprintReadWrite)
+	int SpareBulletNum;
 };

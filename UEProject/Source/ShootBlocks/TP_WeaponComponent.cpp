@@ -18,11 +18,18 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 {
 	// Default offset from the character location for projectiles to spawn
 	MuzzleOffset = FVector(100.0f, 0.0f, 10.0f);
+	BulletNum=10;
+	SpareBulletNum=10;
 }
 
 
 void UTP_WeaponComponent::Fire()
 {
+	if (BulletNum<=0)
+	{
+		NotBullet.Broadcast();
+		return;
+	}
 	UE_LOG(LogTemp, Display, TEXT("Fire"));
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
@@ -55,7 +62,7 @@ void UTP_WeaponComponent::Fire()
 			// Spawn the projectile at the muzzle
 			World->SpawnActor<AShootBlocksProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 
-			FireDate.Broadcast();
+			FireDate.Broadcast(--BulletNum);
 
 			//World->SpawnActorDeferred<AActor>(ProjectileClass,SpawnTransform,Character,Character,ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
 		}
@@ -133,5 +140,5 @@ void UTP_WeaponComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void UTP_WeaponComponent::CallFire()
 {
-	FireDate.Broadcast();
+	FireDate.Broadcast(6);
 }
